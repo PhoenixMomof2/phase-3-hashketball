@@ -1,4 +1,5 @@
-# Write your code below game_hash
+require 'pry'
+
 def game_hash
   {
     home: {
@@ -126,4 +127,75 @@ def game_hash
   }
 end
 
-# Write code here
+# helper method for accessing an array of all the players 
+def all_players()
+  game_hash[:home][:players] + game_hash[:away][:players]
+end
+
+def num_points_scored(player_name)
+  player = player_stats(player_name)
+  player[:points]
+end
+
+# helper method for accessing a hash of a player's stats
+def player_stats(player_name)
+  all_players.find {|player| player[:player_name] == player_name }
+end
+
+def shoe_size (player_name)
+  player = player_stats(player_name)
+  player[:shoe]
+end
+
+# helper method to find a team by their team name
+def which_team(team_name)
+  team_info = game_hash.find do |location, team_data|
+    team_data[:team_name] == team_name
+  end
+  team_info[1]
+  # index 0 returns :home
+  # indices 2 and 3 return nil
+end
+
+def team_names
+  game_hash.map do |location, team_data|
+    team_data[:team_name]
+  end
+end
+
+def team_colors(team_name)
+  team = which_team(team_name)
+  team[:colors]
+end
+
+def player_numbers(team_name)
+  team = which_team(team_name)
+  team[:players].map {|player| player[:number] }
+end
+
+# helper method to find the player with the biggest shoe
+def big_shoe_player
+  all_players.max_by do |player|
+    player[:shoe]
+  end
+end
+
+def big_shoe_rebounds
+  big_shoe_player[:rebounds]
+end
+
+# Bonus Questions:
+
+# If you would like to take on a few more challenges, there are a few more things you can do. There are not tests for this content - these are provide for additional practice working with hash data.
+
+# Define methods to return the answer to the following questions:
+
+# Which player has the most points? Call the method most_points_scored.
+
+# Which team has the most points? Call the method winning_team.
+
+# Which player has the longest name? Call the method player_with_longest_name.
+
+# Super Bonus:
+
+# Write a method that returns true if the player with the longest name had the most steals. Call the method long_name_steals_a_ton?.
